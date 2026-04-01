@@ -1,14 +1,82 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 
 const Task = () => {
-  return (
-    <div>
-        <div>
-            <h1>Task Manager</h1>
-            <p>Your personal TaskManager</p>
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [loading, setLoading] = useState(false); // ✅ Fix: "loding" → "loading"
+
+    const createNote = (e) => {
+        e.preventDefault();
+    }
+
+    return (
+        <div className="min-h-screen bg-[#0f0e17] flex items-center justify-center p-6">
+            <div className="w-full max-w-md">
+
+                {/* Header */}
+                <div className="mb-8">
+                    <p className="text-xs tracking-[0.3em] uppercase text-orange-400 font-medium mb-2">
+                        Personal Workspace
+                    </p>
+                    <h1 className="text-4xl font-extrabold text-white leading-tight"
+                        style={{ fontFamily: 'Syne, sans-serif' }}>
+                        Task <span className="text-orange-400">Manager</span>
+                    </h1>
+                    <p className="text-zinc-400 text-sm mt-1 font-light">
+                        Your personal task manager
+                    </p>
+                </div>
+
+                {/* Form Card */}
+                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-[0_0_40px_rgba(255,107,53,0.15)]">
+                    <form onSubmit={createNote}>
+
+                        {/* Title */}
+                        <div className="mb-5">
+                            <label className="block text-xs tracking-widest uppercase text-zinc-500 font-medium mb-2">
+                                Title
+                            </label>
+                            <input
+                                type="text"
+                                value={title}
+                                placeholder="Task Title..."
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full bg-zinc-800/60 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500/40 transition-all duration-200 outline-none"
+                            />
+                        </div>
+
+                        {/* Description */}
+                        <div className="mb-6">
+                            <label className="block text-xs tracking-widest uppercase text-zinc-500 font-medium mb-2">
+                                Description {/* ✅ Fix: "Discription" → "Description" */}
+                            </label>
+                            <textarea
+                                value={content}
+                                placeholder="Describe your task..."
+                                onChange={(e) => setContent(e.target.value)} // ✅ Fix: setTitle → setContent
+                                rows={4}
+                                className="w-full bg-zinc-800/60 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm resize-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/40 transition-all duration-200 outline-none"
+                            />
+                        </div>
+
+                        {/* Button */}
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-orange-500 hover:bg-orange-400 disabled:opacity-60 text-white font-semibold text-sm tracking-wide py-3.5 rounded-xl transition-all duration-200 hover:shadow-[0_0_24px_rgba(255,107,53,0.5)] flex items-center justify-center gap-2"
+                        >
+                            {loading ? "Saving..." : <><span className="text-lg leading-none">+</span> Create Note</>}
+                        </button>
+                    </form>
+                </div>
+
+                <p className="text-center text-zinc-600 text-xs mt-4">
+                    Press create to save your task
+                </p>
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default Task
