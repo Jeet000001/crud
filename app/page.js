@@ -1,4 +1,5 @@
-import Task from '@/components/Task'
+import CreateTask from '@/components/CreateTask'
+import ShowTask from '@/components/ShowTask'
 import { dbConnect } from '@/lib/dbConnect'
 import React from 'react'
 
@@ -6,7 +7,9 @@ const page = async() => {
   await dbConnect()
   return (
     <div>
-      <Task />
+      <CreateTask />
+      <ShowTask />
+
     </div>
   )
 }
