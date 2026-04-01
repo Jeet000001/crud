@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 
 const Task = () => {
+    const [task, setTask] = useState([])
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false); // ✅ Fix: "loding" → "loading"
@@ -14,7 +15,7 @@ const Task = () => {
         setLoading(true);
 
         try {
-            const response = await fetch("/api/notes", {
+            const response = await fetch("/api/task", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ title, content })
@@ -22,7 +23,9 @@ const Task = () => {
             const result = await response.json();
 
             if (result.success) {
-                setTitle((prev) => [result.data, ...prev]);
+                console.log("Data created", result);
+                
+                setTask((prev) => [result.data, ...prev]);
                 setTitle("");
                 setContent("")
             }
