@@ -37,22 +37,11 @@ const Task = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#0f0e17] flex items-center justify-center p-6">
+        <div>
             <div className="w-full max-w-md">
 
                 {/* Header */}
-                <div className="mb-8">
-                    <p className="text-xs tracking-[0.3em] uppercase text-orange-400 font-medium mb-2">
-                        Personal Workspace
-                    </p>
-                    <h1 className="text-4xl font-extrabold text-white leading-tight"
-                        style={{ fontFamily: 'Syne, sans-serif' }}>
-                        Task <span className="text-orange-400">Manager</span>
-                    </h1>
-                    <p className="text-zinc-400 text-sm mt-1 font-light">
-                        Your personal task manager
-                    </p>
-                </div>
+                
 
                 {/* Form Card */}
                 <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-[0_0_40px_rgba(255,107,53,0.15)]">

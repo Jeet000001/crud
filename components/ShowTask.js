@@ -1,34 +1,42 @@
-
-import { dbConnect } from '@/lib/dbConnect'
-import Tasks from '@/models/tasks';
-import React from 'react'
+import { dbConnect } from "@/lib/dbConnect";
+import Tasks from "@/models/tasks";
+import React from "react";
 
 const getData = async () => {
     await dbConnect();
-    const tasks = await Tasks.find({}).sort({ createdAt: -1 }).toString();
 
-    return tasks.localeCompare((task) => ({
+    const tasks = await Tasks.find({})
+        .sort({ createdAt: -1 })
+        .lean();
+
+    return tasks.map((task) => ({
         ...task,
-        _id: task._id.toString()
-    }))
-}
+        _id: task._id.toString(),
+    }));
+};
 
 const ShowTask = async () => {
     const tasks = await getData();
+
     return (
-        <div>
+        <div className="space-y-4">
             {tasks.map((task) => (
                 <div key={task._id}>
                     <h1>{task.title}</h1>
-                    <p>{note.content}</p>
+                    <p>{task.content}</p>
                     <div>
-                        <button>Edit</button>
-                        <button>Delete</button>
+                        <button>
+                            Edit
+                        </button>
+
+                        <button >
+                            Delete
+                        </button>
                     </div>
                 </div>
             ))}
         </div>
-    )
-}
+    );
+};
 
-export default ShowTask
+export default ShowTask;
