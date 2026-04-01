@@ -6,8 +6,31 @@ const Task = () => {
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false); // ✅ Fix: "loding" → "loading"
 
-    const createNote = (e) => {
+    const createTask = async (e) => {
         e.preventDefault();
+
+        if (!title.trim() || !content.trim()) return;
+
+        setLoading(true);
+
+        try {
+            const response = await fetch("/api/notes", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, content })
+            })
+            const result = await response.json();
+
+            if (result.success) {
+                setTitle((prev) => [result.data, ...prev]);
+                setTitle("");
+                setContent("")
+            }
+        } catch (error) {
+            console.error("Failed to create note:", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -30,7 +53,7 @@ const Task = () => {
 
                 {/* Form Card */}
                 <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-[0_0_40px_rgba(255,107,53,0.15)]">
-                    <form onSubmit={createNote}>
+                    <form onSubmit={createTask}>
 
                         {/* Title */}
                         <div className="mb-5">
@@ -63,7 +86,7 @@ const Task = () => {
                         {/* Button */}
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={loading || !title.trim() || !content.trim()}
                             className="w-full bg-orange-500 hover:bg-orange-400 disabled:opacity-60 text-white font-semibold text-sm tracking-wide py-3.5 rounded-xl transition-all duration-200 hover:shadow-[0_0_24px_rgba(255,107,53,0.5)] flex items-center justify-center gap-2"
                         >
                             {loading ? "Saving..." : <><span className="text-lg leading-none">+</span> Create Note</>}
