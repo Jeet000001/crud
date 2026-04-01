@@ -7,12 +7,7 @@ const page = async () => {
   await dbConnect();
   return (
     <div className="min-h-screen bg-[#0f0e17] p-6">
-
-      {/* Header - Top Center */}
-      <div className="text-center mb-10">
-        <p className="text-xs tracking-[0.3em] uppercase text-orange-400 font-medium mb-2">
-          Personal Workspace
-        </p>
+      <div className="text-center mb-6">
         <h1
           className="text-4xl font-extrabold text-white leading-tight"
           style={{ fontFamily: "Syne, sans-serif" }}
@@ -23,8 +18,6 @@ const page = async () => {
           Your personal task manager
         </p>
       </div>
-
-      {/* Components - Side by Side (lg+), Stack (mobile) */}
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         <div className="w-full lg:w-1/2">
           <CreateTask />
@@ -33,7 +26,6 @@ const page = async () => {
           <ShowTask />
         </div>
       </div>
-
     </div>
   );
 };
