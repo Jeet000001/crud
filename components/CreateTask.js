@@ -1,7 +1,11 @@
 "use client"
 import React, { useState } from 'react'
+import { useRouter } from "next/navigation";
 
 const CreateTask = () => {
+
+    const router = useRouter();
+
     const [task, setTask] = useState([])
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -20,16 +24,24 @@ const CreateTask = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ title, content })
             });
+
             const result = await response.json();
 
             if (!response.ok) throw new Error(result.message || "Something went wrong");
 
             if (result.success) {
+
                 console.log("Data created", result);
+
                 setTask((prev) => [result.data, ...prev]);
+
                 setTitle("");
                 setContent("");
+
+                // ⭐ IMPORTANT
+                router.refresh(); // Server component re-render karega
             }
+
         } catch (error) {
             console.error("Failed to create note:", error);
         } finally {
@@ -40,18 +52,24 @@ const CreateTask = () => {
     return (
         <div>
             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-[0_0_40px_rgba(255,107,53,0.15)] h-full flex flex-col">
+
                 <div className="mb-6">
                     <h2 className="text-white font-bold text-lg" style={{ fontFamily: "Syne, sans-serif" }}>
                         ✦ New Task
                     </h2>
-                    <p className="text-zinc-500 text-xs mt-1">Fill in the details below</p>
+                    <p className="text-zinc-500 text-xs mt-1">
+                        Fill in the details below
+                    </p>
                 </div>
 
                 <form onSubmit={createTask} className="flex flex-col flex-1">
+
+                    {/* Title */}
                     <div className="mb-2">
                         <label className="block text-xs tracking-widest uppercase text-zinc-500 font-medium mb-2">
                             Title
                         </label>
+
                         <input
                             type="text"
                             value={title}
@@ -60,10 +78,13 @@ const CreateTask = () => {
                             className="w-full bg-zinc-800/60 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500/40 transition-all duration-200 outline-none"
                         />
                     </div>
+
+                    {/* Description */}
                     <div className="mb-2 flex-1">
                         <label className="block text-xs tracking-widest uppercase text-zinc-500 font-medium mb-2">
                             Description
                         </label>
+
                         <textarea
                             value={content}
                             placeholder="Describe your task..."
@@ -72,6 +93,8 @@ const CreateTask = () => {
                             className="w-full h-full min-h-[120px] bg-zinc-800/60 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm resize-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/40 transition-all duration-200 outline-none"
                         />
                     </div>
+
+                    {/* Button */}
                     <button
                         type="submit"
                         disabled={loading || !title.trim() || !content.trim()}
@@ -84,9 +107,11 @@ const CreateTask = () => {
                     </button>
 
                 </form>
+
                 <p className="text-center text-zinc-600 text-xs mt-4">
                     Press create to save your task
                 </p>
+
             </div>
         </div>
     )
