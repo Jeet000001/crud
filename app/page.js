@@ -3,17 +3,24 @@ import ShowTask from "@/components/ShowTask";
 import { dbConnect } from "@/lib/dbConnect";
 import Tasks from "@/models/tasks";
 
-export const dynamic = "force-dynamic"; // important fix
+export const dynamic = "force-dynamic";
 
 const getData = async () => {
-  await dbConnect();
+  try {
+    await dbConnect();
 
-  const tasks = await Tasks.find({}).sort({ createdAt: -1 }).lean();
+    const tasks = await Tasks.find({})
+      .sort({ createdAt: -1 })
+      .lean();
 
-  return tasks.map((task) => ({
-    ...task,
-    _id: task._id.toString(),
-  }));
+    return tasks.map((task) => ({
+      ...task,
+      _id: task._id.toString(),
+    }));
+  } catch (error) {
+    console.error("DB Fetch Error:", error);
+    return []; // important fallback
+  }
 };
 
 const page = async () => {
